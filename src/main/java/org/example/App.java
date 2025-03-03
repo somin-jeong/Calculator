@@ -6,34 +6,34 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
-        Calculator calculator = new Calculator();
+        ArithmaticCalculator arithmaticCalculator = new ArithmaticCalculator();
 
         Scanner sc = new Scanner(System.in);
 
         String end = "";
         while (!Objects.equals(end, "exit")) {
-            int num1 = getNum("첫 번째 숫자를 입력하세요: ", sc);
-            int num2 = getNum("두 번째 숫자를 입력하세요: ", sc);
+            double num1 = getOperand("첫 번째 숫자를 입력하세요: ", sc);
+            double num2 = getOperand("두 번째 숫자를 입력하세요: ", sc);
 
             System.out.print("사칙연산 기호를 입력하세요: ");
             char operation = sc.next().charAt(0);
 
-            calculateNums(calculator, num1, num2, operation);
+            Number number = calculateNums(arithmaticCalculator, new Operand<>(num1), new Operand<>(num2), operation);
 
-            calculator.removeResult();
+            arithmaticCalculator.printPreviousResult(number);
 
             System.out.println("더 계산하시겠습니까? (exit 입력 시 종료)");
             end = sc.next();
         }
     }
 
-    private static int getNum(String s, Scanner sc) {
-        int num = 0;
+    private static double getOperand(String s, Scanner sc) {
+        double num;
         while (true) {
             System.out.print(s);
 
             try {
-                num = sc.nextInt();
+                num = sc.nextDouble();
             } catch (InputMismatchException e) {
                 System.out.println("숫자를 입력해주세요");
                 sc.nextLine();
@@ -50,9 +50,11 @@ public class App {
         return num;
     }
 
-    private static void calculateNums(Calculator calculator, int num1, int num2, char operation) {
+    private static <T extends Number> Number calculateNums(ArithmaticCalculator arithmaticCalculator, Operand<T> num1, Operand<T> num2, char operation) {
+        Number result = 0;
         try {
-            int result = calculator.calculate(num1, num2, operation);
+            OperatorType operatorType = OperatorType.fromChar(operation);
+            result = arithmaticCalculator.calculate(num1, num2, operatorType);
             System.out.println(result);
         } catch (ArithmeticException e) {
             if (Objects.equals(e.getMessage(), "/ by zero")) {
@@ -61,5 +63,6 @@ public class App {
         } catch (InputMismatchException e) {
             System.out.println("올바른 연산 기호를 입력해주세요.");
         }
+        return result;
     }
 }
