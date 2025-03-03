@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
 
 public enum OperatorType {
@@ -15,11 +16,9 @@ public enum OperatorType {
     }
 
     public static OperatorType fromChar(char symbol) {
-        for (OperatorType op : values()) {
-            if (op.symbol == symbol) {
-                return op;
-            }
-        }
-        throw new InputMismatchException("Invalid operator: " + symbol);
+        return Arrays.stream(values())
+                .filter(operatorType -> operatorType.symbol == symbol)
+                .findFirst()
+                .orElseThrow(() -> new InputMismatchException("Invalid operator: " + symbol));
     }
 }
