@@ -7,18 +7,15 @@ public class ArithmaticCalculator {
     private final Queue<Number> totalResults = new ArrayDeque<>();
 
     public <T extends Number> Number calculate(Operand<T> operand1, Operand<T> operand2, OperatorType operator) {
-        double num1 = operand1.getNum().doubleValue();
-        double num2 = operand2.getNum().doubleValue();
+        double num1 = operand1.num().doubleValue();
+        double num2 = operand2.num().doubleValue();
         double result = 0;
 
-        if (operator == OperatorType.PLUS) {
-            result = num1 + num2;
-        } else if (operator == OperatorType.MINUS){
-            result = num1 - num2;
-        } else if (operator == OperatorType.MULTIPLY){
-            result = num1 * num2;
-        } else if (operator == OperatorType.DIVIDE){
-            result = num1 % num2;
+        switch (operator) {
+            case PLUS -> result = num1 + num2;
+            case MINUS -> result = num1 - num2;
+            case DIVIDE -> result = num1 / num2;
+            case MULTIPLY -> result = num1 * num2;
         }
 
         totalResults.add(result);
