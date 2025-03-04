@@ -19,6 +19,6 @@ public enum OperatorType {
         return Arrays.stream(values())
                 .filter(operatorType -> operatorType.symbol == symbol)
                 .findFirst()
-                .orElseThrow(() -> new InputMismatchException("Invalid operator: " + symbol));
+                .orElseThrow(() -> new InputMismatchException("올바른 연산 기호를 입력해주세요."));
     }
 }
