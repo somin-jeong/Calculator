@@ -17,15 +17,16 @@ public class InputHandler {
         while (true) {
             try {
                 System.out.print(s);
+                if (!sc.hasNextDouble()) {
+                    System.out.println(INPUT_NUMBER);
+                    sc.nextLine();  // 버퍼 비우기
+                    continue;
+                }
                 return new Operand<>(sc.nextDouble());
             } catch (InputMismatchException e) {
                 if (Objects.equals(e.getMessage(), NOT_ALLOWED_NUMBER)) {
                     System.out.println(NOT_ALLOWED_NUMBER);
-                    continue;
                 }
-
-                System.out.println(INPUT_NUMBER);
-                sc.nextLine();
             }
         }
     }
